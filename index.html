@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>THDC INDIA LIMITED — Unified Power Market Study Portal</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f4f7fb;color:#17324d;font-family:"Book Antiqua","Palatino Linotype",Georgia,serif}
+header{background:#fff;border-bottom:1px solid #d7e2ed;padding:15px 28px;position:sticky;top:0;z-index:20;box-shadow:0 3px 14px #17324d14}
+.brand{display:flex;align-items:center;gap:12px;font-size:25px;font-weight:700;color:#123f72}.mark{width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,#1557a6,#0b76b7);color:#fff;display:grid;place-items:center;font-size:23px}.sub{margin-left:54px;margin-top:-6px;color:#66788e;font-size:12px}
+main{max-width:1500px;margin:auto;padding:24px}h1{font-size:32px;color:#123f72;margin:8px 0}h2{font-size:19px;color:#174c7d;margin:0 0 14px}.lead,.note,.muted{color:#66788e}.screen{display:none}.screen.active{display:block}
+.seggrid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}.seg{min-height:175px;padding:22px;border:1px solid #cbd9e8;border-radius:18px;background:linear-gradient(145deg,#fff,#edf4fb);cursor:pointer;box-shadow:0 8px 25px #1e416414;transition:.18s}.seg:hover{transform:translateY(-4px);border-color:#6aa8dc}.ico{font-size:34px}.seg b{display:block;font-size:22px;color:#123f72;margin:12px 0 5px}.seg span{font-size:13px;color:#657b91}
+.toolbar{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-bottom:14px}.pill{padding:8px 12px;border:1px solid #cfdeeb;border-radius:99px;background:#eef5fb;color:#315775}
+button,.filebtn{font:inherit;font-weight:700;border:0;border-radius:9px;padding:10px 14px;color:#fff;background:#245a8f;cursor:pointer}.primary{background:linear-gradient(135deg,#1557a6,#0b76b7)}.green{background:#198754}.ghost{background:#fff;color:#245a8f;border:1px solid #b9cde0}
+.panel{background:#fff;border:1px solid #d7e2ed;border-radius:16px;padding:18px;margin-bottom:16px;box-shadow:0 8px 25px #1e41640f}.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.grid5{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}.card{padding:15px;border:1px solid #d7e2ed;border-radius:13px;background:#fff}.k{font-size:12px;color:#64788e}.v{font-size:22px;font-weight:700;color:#123f72;margin-top:5px}
+.field{display:flex;flex-direction:column}.field label{font-size:12px;color:#64788e;margin-bottom:5px}input{width:100%;background:#fff;color:#17324d;border:1px solid #cbd8e6;border-radius:9px;padding:9px 10px;font:inherit}
+.status{padding:11px 13px;border-radius:10px;border:1px solid #d7e2ed;margin-bottom:12px}.ok{background:#eaf8f1;border-color:#9ed5ba}.bad{background:#fff0f1;border-color:#e4a3aa}.warn{background:#fff8e5;border-color:#e5c86f}
+.tablewrap{overflow:auto;max-height:520px;border:1px solid #d7e2ed;border-radius:10px}table{width:100%;border-collapse:collapse;background:#fff;font-size:13px}th,td{padding:8px;border-bottom:1px solid #e3eaf2;text-align:left;white-space:nowrap}th{position:sticky;top:0;background:#eaf2fb;color:#174c7d;z-index:2}
+.low td{background:#e8f5e9}.mid td{background:#fffbd1}.high td{background:#fff0d6}.vhigh td{background:#fde2e2}.hidden{display:none!important}
+.tabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px}.tabs button{background:#eef5fb;color:#174c7d;border:1px solid #cfdeeb}.tabs button.active{background:#1557a6;color:#fff}.report{display:none}.report.active{display:block}
+footer{text-align:center;color:#71859c;font-size:12px;padding:22px}
+@media(max-width:1100px){.seggrid{grid-template-columns:repeat(2,1fr)}.grid4,.grid5{grid-template-columns:repeat(2,1fr)}.two{grid-template-columns:1fr}}@media(max-width:600px){main{padding:13px}.seggrid,.grid4,.grid5{grid-template-columns:1fr}}
+@media print{header{position:static;box-shadow:none}.no-print{display:none!important}.panel{box-shadow:none;break-inside:avoid}.tablewrap{max-height:none;overflow:visible}body{background:#fff}}
+</style>
+</head>
+<body>
+<header><div class="brand"><div class="mark">⚡</div><div>THDC INDIA LIMITED — Unified Power Market Study Portal</div></div><div class="sub">MASTER_DATA compatible • 96-block validation • selection-driven analysis • audit-ready reports</div></header>
+
+<main>
+<section id="segmentScreen" class="screen active">
+<h1>Market Segment Selection</h1><p class="lead">Select the segment before uploading data.</p>
+<div class="seggrid">
+<div class="seg" onclick="App.choose('DAM')"><div class="ico">📊</div><b>DAM</b><span>Day Ahead Market</span></div>
+<div class="seg" onclick="App.choose('GDAM')"><div class="ico">🌱</div><b>GDAM</b><span>Green Day Ahead Market</span></div>
+<div class="seg" onclick="App.choose('RTM')"><div class="ico">⚡</div><b>RTM</b><span>Real Time Market</span></div>
+<div class="seg" onclick="App.choose('TAM')"><div class="ico">🕒</div><b>TAM</b><span>Term Ahead Market</span></div>
+<div class="seg" onclick="App.choose('SOLAR')"><div class="ico">☀️</div><b>SOLAR</b><span>Generation / market analysis</span></div>
+</div></section>
+
+<section id="workScreen" class="screen">
+<div class="toolbar no-print">
+<span class="pill">Segment: <b id="segmentLabel">—</b></span>
+<button class="ghost" onclick="App.reset()">Change Segment</button>
+<label class="filebtn" for="file">Upload Excel</label><input id="file" class="hidden" type="file" accept=".xlsx,.xls,.csv">
+<button class="primary" onclick="App.verify()">Verify Data</button><button class="green" onclick="App.analyze()">Run Analysis</button>
+<button class="ghost" onclick="App.exportExcel()">Export Excel</button><button class="ghost" onclick="App.exportPDF()">Export PDF</button>
+</div>
+<div id="loadStatus" class="status warn">Upload the standardized workbook. Required sheet: MASTER_DATA.</div>
+
+<div class="panel"><h2>Study Selection</h2>
+<div class="grid5">
+<div class="field"><label>Study Name</label><input id="study" value="Market Study"></div>
+<div class="field"><label>Start Date</label><input id="startDate" type="date"></div>
+<div class="field"><label>End Date</label><input id="endDate" type="date"></div>
+<div class="field"><label>Start Block</label><input id="startBlock" type="number" min="1" max="96" value="1"></div>
+<div class="field"><label>End Block</label><input id="endBlock" type="number" min="1" max="96" value="96"></div>
+</div>
+<div class="field" style="margin-top:12px"><label>Custom Blocks — optional; overrides Start/End Block</label><input id="customBlocks" placeholder="25,26,30,40,55,68"></div>
+<div class="note" style="margin-top:10px">Analysis uses only selected blocks and selected dates. The complete 1–96 block profile is reported separately.</div>
+</div>
+
+<div class="panel"><h2>Standard Input Contract</h2><div class="note">
+<b>Sheet:</b> MASTER_DATA<br>
+<b>Exact columns:</b> Date | Hour | Block No. | Time Block | MCP (₹/MWh)<br>
+<b>Excel compatibility:</b> Dates stored as Excel dates and text dates are supported. MCP may be blank while the template is being prepared.
+</div></div>
+
+<div class="panel"><h2>Data Verification Engine</h2><div id="verification"><div class="note">Verification will run after upload.</div></div></div>
+
+<div id="results" class="hidden">
+<div class="panel"><h2>Executive Summary</h2><div id="kpis" class="grid4"></div></div>
+<div class="two"><div class="panel"><h2>96-Block Average MCP Profile</h2><canvas id="priceChart"></canvas></div><div class="panel"><h2>96-Block Selected Record Count</h2><canvas id="countChart"></canvas></div></div>
+<div class="two"><div class="panel"><h2>Maximum MCP — All Matching Date + Block Records</h2><div id="maxTable" class="tablewrap"></div></div><div class="panel"><h2>Minimum MCP — All Matching Date + Block Records</h2><div id="minTable" class="tablewrap"></div></div></div>
+<div class="panel"><h2>Complete 96-Block Report</h2><div id="blockTable" class="tablewrap"></div></div>
+<div class="panel"><h2>Management Reports</h2><div class="tabs">
+<button class="active" onclick="App.tab('monthly',this)">Monthly</button><button onclick="App.tab('weekly',this)">Weekly</button><button onclick="App.tab('yearly',this)">Yearly</button><button onclick="App.tab('daily',this)">Daily</button>
+</div>
+<div id="report-monthly" class="report active"><div id="monthlyTable" class="tablewrap"></div></div>
+<div id="report-weekly" class="report"><div id="weeklyTable" class="tablewrap"></div></div>
+<div id="report-yearly" class="report"><div id="yearlyTable" class="tablewrap"></div></div>
+<div id="report-daily" class="report"><div id="dailyTable" class="tablewrap"></div></div></div>
+<div class="panel"><h2>Selected Data</h2><div id="selectedTable" class="tablewrap"></div></div>
+<div class="panel"><h2>Calculation Audit</h2><div id="audit" class="note"></div></div>
+</div>
+</section>
+</main>
+<footer>THDC INDIA LIMITED • Unified Power Market Study Portal • DAM / GDAM / RTM / TAM / SOLAR • No DSM module</footer>
+
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+const money=v=>v==null?"—":Number(v).toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2});
+const fd=d=>d?String(d.getDate()).padStart(2,"0")+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+d.getFullYear():"";
+const iso=d=>d?d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"):"";
+const norm=s=>String(s??"").trim().toLowerCase().replace(/[^a-z0-9]+/g,"_").replace(/^_|_$/g,"");
+const num=v=>{if(v===null||v===undefined||String(v).trim()==="")return null;const n=Number(String(v).replace(/[₹,\s]/g,""));return Number.isFinite(n)?n:null};
+const state={segment:null,rows:[],verified:false,result:null};
+
+function dateParse(v){
+ if(v instanceof Date&&!isNaN(v))return new Date(v.getFullYear(),v.getMonth(),v.getDate());
+ if(typeof v==="number"){const d=new Date(Date.UTC(1899,11,30)+v*86400000);return isNaN(d)?null:new Date(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate())}
+ const s=String(v??"").trim();if(!s)return null;
+ let m=s.match(/^(\d{1,2})[-/.](\d{1,2})[-/.](\d{4})$/);if(m)return new Date(+m[3],+m[2]-1,+m[1]);
+ const d=new Date(s);return isNaN(d)?null:new Date(d.getFullYear(),d.getMonth(),d.getDate());
+}
+function blockTime(b){if(!Number.isInteger(b)||b<1||b>96)return "";const a=(b-1)*15,c=b*15;const f=x=>String(Math.floor(x/60)%24).padStart(2,"0")+":"+String(x%60).padStart(2,"0");return f(a)+" - "+f(c)}
+function blockFromTime(t){const m=String(t??"").match(/(\d{1,2}):(\d{2})\s*[-–]\s*(\d{1,2}):(\d{2})/);return m?Math.round((+m[1]*60 + +m[2])/15+1):null}
+function aggregate(a){const v=a.filter(Number.isFinite);if(!v.length)return{count:0,avg:null,max:null,min:null,median:null};const s=[...v].sort((a,b)=>a-b);return{count:v.length,avg:v.reduce((x,y)=>x+y,0)/v.length,max:Math.max(...v),min:Math.min(...v),median:s.length%2?s[(s.length-1)/2]:(s[s.length/2-1]+s[s.length/2])/2}}
+function mcpClass(v){return v==null?"":v<1000?"low":v<3000?"mid":v<7500?"high":"vhigh"}
+function blocks(){const c=$("customBlocks").value.trim(),s=new Set();if(c)c.split(",").forEach(x=>{const n=Number(x.trim());if(Number.isInteger(n)&&n>=1&&n<=96)s.add(n)});else{let a=Number($("startBlock").value),b=Number($("endBlock").value);if(a>b)[a,b]=[b,a];for(let i=a;i<=b;i++)if(i>=1&&i<=96)s.add(i)}return s}
+function inDate(d){const a=$("startDate").value,b=$("endDate").value;return d&&(!a||iso(d)>=a)&&(!b||iso(d)<=b)}
+
+window.App={
+choose(seg){state.segment=seg;state.rows=[];state.verified=false;state.result=null;$("segmentLabel").textContent=seg;$("study").value=seg+" Market Study";$("segmentScreen").classList.remove("active");$("workScreen").classList.add("active")},
+reset(){location.reload()},
+verify(){
+ const r=state.rows,issues=[],dates=new Map(),keys=new Set();let bd=0,bb=0,bt=0,bm=0,dup=0;
+ r.forEach(x=>{
+  if(!x.date)bd++;if(!Number.isInteger(x.block)||x.block<1||x.block>96)bb++;
+  if(x.mcp===null&&x.mcpRaw!=="")bm++;
+  if(x.date){const d=fd(x.date);if(!dates.has(d))dates.set(d,[]);dates.get(d).push(x.block);const k=d+"|"+x.block;if(keys.has(k))dup++;keys.add(k)}
+  if(Number.isInteger(x.block)&&x.block>=1&&x.block<=96&&x.time&&blockFromTime(x.time)!==x.block)bt++;
+ });
+ let incomplete=0;dates.forEach(v=>{if(new Set(v.filter(Number.isFinite)).size!==96)incomplete++});
+ if(!r.length)issues.push("No records loaded");if(bd)issues.push(bd+" invalid date record(s)");if(bb)issues.push(bb+" invalid block number(s)");if(bt)issues.push(bt+" Time Block ↔ Block Number mismatch(es)");if(bm)issues.push(bm+" non-numeric MCP value(s)");if(dup)issues.push(dup+" duplicate Date + Block record(s)");if(incomplete)issues.push(incomplete+" date(s) without exactly 96 unique blocks");
+ state.verified=issues.length===0&&r.length>0;
+ const filled=r.filter(x=>Number.isFinite(x.mcp)).length,complete=[...dates.values()].filter(v=>new Set(v).size===96).length;
+ $("verification").innerHTML='<div class="grid4"><div class="card"><div class="k">Records</div><div class="v">'+r.length.toLocaleString()+'</div></div><div class="card"><div class="k">Dates</div><div class="v">'+dates.size.toLocaleString()+'</div></div><div class="card"><div class="k">Complete 96-block Dates</div><div class="v">'+complete.toLocaleString()+'</div></div><div class="card"><div class="k">MCP Filled</div><div class="v">'+filled.toLocaleString()+'</div></div></div><div class="status '+(state.verified?"ok":"bad")+'">'+(state.verified?"✓ VERIFIED — Analysis Engine unlocked.":"✕ FAILED — Analysis Engine locked.")+'</div>'+(issues.length?'<div class="note">'+issues.map(x=>"• "+x).join("<br>")+"</div>":'<div class="note">✓ MASTER_DATA accepted. Numeric MCP records: <b>'+filled.toLocaleString()+'</b>. Blank MCP cells are allowed.</div>');
+},
+analyze(){
+ if(!state.verified)return alert("Verify Data first.");
+ const bs=blocks();if(!bs.size)return alert("Select valid blocks.");
+ const rows=state.rows.filter(x=>bs.has(x.block)&&inDate(x.date)&&Number.isFinite(x.mcp));
+ if(!rows.length)return alert("No numeric MCP values are available for the selected dates and blocks. Please fill MCP in column E.");
+ const overall=aggregate(rows.map(x=>x.mcp)),maxRows=rows.filter(x=>x.mcp===overall.max),minRows=rows.filter(x=>x.mcp===overall.min);
+ const bm=new Map(),mo=new Map(),we=new Map(),ye=new Map(),da=new Map();
+ rows.forEach(x=>{
+  const y=x.date.getFullYear(),m=x.date.getMonth()+1,mk=y+"-"+String(m).padStart(2,"0");if(!mo.has(mk))mo.set(mk,[]);mo.get(mk).push(x.mcp);
+  const d=new Date(x.date);d.setDate(d.getDate()-((d.getDay()+6)%7));const wk=iso(d);if(!we.has(wk))we.set(wk,[]);we.get(wk).push(x.mcp);
+  if(!ye.has(y))ye.set(y,[]);ye.get(y).push(x.mcp);const dk=iso(x.date);if(!da.has(dk))da.set(dk,[]);da.get(dk).push(x.mcp);
+  if(!bm.has(x.block))bm.set(x.block,[]);bm.get(x.block).push(x.mcp);
+ });
+ const br=[...Array(96)].map((_,i)=>{const b=i+1;return{block:b,time:blockTime(b),selected:bs.has(b),...aggregate(bm.get(b)||[])}});
+ const monthly=[...mo.entries()].sort().map(([k,v])=>{const[y,m]=k.split("-").map(Number);return{month:new Date(y,m-1,1).toLocaleString("en-IN",{month:"long"}),year:y,...aggregate(v)}});
+ const weekly=[...we.entries()].sort().map(([k,v])=>{const d=dateParse(k),e=new Date(d);e.setDate(e.getDate()+6);return{weekStart:k,weekEnd:iso(e),...aggregate(v)}});
+ const yearly=[...ye.entries()].sort().map(([y,v])=>({year:Number(y),...aggregate(v)}));
+ const daily=[...da.entries()].sort().map(([k,v])=>({date:k,...aggregate(v)}));
+ state.result={rows,blocks:[...bs],overall,maxRows,minRows,blockReport:br,monthly,weekly,yearly,daily};render();
+},
+tab(n,b){document.querySelectorAll(".report").forEach(x=>x.classList.remove("active"));$("report-"+n).classList.add("active");document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("active"));b.classList.add("active")},
+exportExcel(){alert("This standalone preview does not include an Excel writer. Use Export PDF / Print, or host the portal with the online XLSX library enabled.")},
+exportPDF(){window.print()}
+};
+
+function render(){
+ const q=state.result;$("results").classList.remove("hidden");
+ $("kpis").innerHTML=[["Selected Records",q.rows.length.toLocaleString()],["Average MCP","₹ "+money(q.overall.avg)+"/MWh"],["Maximum MCP","₹ "+money(q.overall.max)+"/MWh"],["Minimum MCP","₹ "+money(q.overall.min)+"/MWh"],["Median MCP","₹ "+money(q.overall.median)+"/MWh"],["Price Spread","₹ "+money(q.overall.max-q.overall.min)+"/MWh"],["Selected Blocks",q.blocks.join(", ")],["Date Range",($("startDate").value||"All")+" → "+($("endDate").value||"All")]].map(x=>'<div class="card"><div class="k">'+x[0]+'</div><div class="v">'+x[1]+"</div></div>").join("");
+ const maxmin=a=>a.length?"<table><thead><tr><th>Sl. No.</th><th>Date</th><th>Block No.</th><th>Time Block</th><th>MCP (₹/MWh)</th></tr></thead><tbody>"+a.map((r,i)=>"<tr><td>"+(i+1)+"</td><td>"+fd(r.date)+"</td><td>"+r.block+"</td><td>"+r.time+"</td><td>"+money(r.mcp)+"</td></tr>").join("")+"</tbody></table>":"<div class='note'>No records.</div>";
+ $("maxTable").innerHTML=maxmin(q.maxRows);$("minTable").innerHTML=maxmin(q.minRows);
+ $("blockTable").innerHTML="<table><thead><tr><th>Sl. No.</th><th>Block No.</th><th>Time Block</th><th>Selected</th><th>Records</th><th>Average MCP</th><th>Maximum MCP</th><th>Minimum MCP</th><th>Median MCP</th></tr></thead><tbody>"+q.blockReport.map((r,i)=>"<tr class='"+mcpClass(r.avg)+"'><td>"+(i+1)+"</td><td>"+r.block+"</td><td>"+r.time+"</td><td><b>"+(r.selected?"YES":"NO")+"</b></td><td>"+r.count+"</td><td>"+money(r.avg)+"</td><td>"+money(r.max)+"</td><td>"+money(r.min)+"</td><td>"+money(r.median)+"</td></tr>").join("")+"</tbody></table>";
+ const simple=(data,heads,vals)=>"<table><thead><tr>"+heads.map(h=>"<th>"+h+"</th>").join("")+"</tr></thead><tbody>"+data.map((r,i)=>"<tr class='"+mcpClass(r.avg)+"'>"+vals(r,i).map(v=>"<td>"+v+"</td>").join("")+"</tr>").join("")+"</tbody></table>";
+ $("monthlyTable").innerHTML=simple(q.monthly,["Sl. No.","Month","Year","Selected Records","Average MCP (₹/MWh)","Maximum MCP","Minimum MCP","Median MCP"],(r,i)=>[i+1,r.month,r.year,r.count,money(r.avg),money(r.max),money(r.min),money(r.median)]);
+ $("weeklyTable").innerHTML=simple(q.weekly,["Sl. No.","Week Start","Week End","Selected Records","Average MCP (₹/MWh)","Maximum MCP","Minimum MCP"],(r,i)=>[i+1,r.weekStart,r.weekEnd,r.count,money(r.avg),money(r.max),money(r.min)]);
+ $("yearlyTable").innerHTML=simple(q.yearly,["Sl. No.","Year","Selected Records","Average MCP (₹/MWh)","Maximum MCP","Minimum MCP","Median MCP"],(r,i)=>[i+1,r.year,r.count,money(r.avg),money(r.max),money(r.min),money(r.median)]);
+ $("dailyTable").innerHTML=simple(q.daily,["Sl. No.","Date","Selected Records","Average MCP (₹/MWh)","Maximum MCP","Minimum MCP"],(r,i)=>[i+1,r.date,r.count,money(r.avg),money(r.max),money(r.min)]);
+ $("selectedTable").innerHTML="<table><thead><tr><th>Sl. No.</th><th>Date</th><th>Hour</th><th>Block No.</th><th>Time Block</th><th>MCP (₹/MWh)</th></tr></thead><tbody>"+q.rows.slice(0,20000).map((r,i)=>"<tr><td>"+(i+1)+"</td><td>"+fd(r.date)+"</td><td>"+r.hour+"</td><td>"+r.block+"</td><td>"+r.time+"</td><td>"+money(r.mcp)+"</td></tr>").join("")+"</tbody></table>";
+ $("audit").innerHTML="Study: <b>"+$("study").value+"</b> • Segment: <b>"+state.segment+"</b> • Records used: <b>"+q.rows.length+"</b> • Selected blocks: <b>"+q.blocks.join(", ")+"</b> • Date range: <b>"+($("startDate").value||"All")+" to "+($("endDate").value||"All")+"</b> • Generated: <b>"+new Date().toLocaleString()+"</b><br><br>Average = SUM(selected numeric MCP) ÷ selected numeric records. Maximum = MAX(MCP). Minimum = MIN(MCP). Median = sorted middle value. Spread = Maximum − Minimum. Monthly, weekly, daily and yearly reports use only selected blocks.";
+}
+
+$("file").addEventListener("change",function(e){
+ const f=e.target.files[0];if(!f)return;
+ $("loadStatus").className="status warn";$("loadStatus").textContent="Reading "+f.name+" …";
+ const rd=new FileReader();
+ rd.onload=function(ev){
+  try{
+   if(f.name.toLowerCase().endsWith(".csv")) throw Error("CSV is not used here. Please upload the Excel workbook (.xlsx/.xls).");
+   // Use SheetJS if the browser has it (online-hosted version); otherwise give a clear
+   // message instead of silently failing.
+   if(typeof XLSX==="undefined"){
+     throw Error("Excel reader library is unavailable in this local preview. Please use the HTML in Chrome with internet access, or use the online-hosted version.");
+   }
+   const wb=XLSX.read(ev.target.result,{type:"array",cellDates:true});
+   if(!wb.Sheets.MASTER_DATA)throw Error("MASTER_DATA sheet not found.");
+   const a=XLSX.utils.sheet_to_json(wb.Sheets.MASTER_DATA,{header:1,defval:null,raw:true});if(!a.length)throw Error("MASTER_DATA is empty.");
+   const h=a[0].map(norm),idx={date:h.indexOf("date"),hour:h.indexOf("hour"),block:h.indexOf("block_no"),time:h.indexOf("time_block"),mcp:h.indexOf("mcp")};
+   if(Object.values(idx).some(i=>i<0))throw Error("Wrong format. Required: Date | Hour | Block No. | Time Block | MCP (₹/MWh).");
+   state.rows=[];for(let i=1;i<a.length;i++){const x=a[i]||[];if(x.every(v=>v==null||String(v).trim()===""))continue;const raw=x[idx.mcp];state.rows.push({date:dateParse(x[idx.date]),hour:num(x[idx.hour]),block:num(x[idx.block]),time:String(x[idx.time]??"").trim(),mcp:num(raw),mcpRaw:String(raw??"").trim(),sourceRow:i+1})}
+   $("loadStatus").className="status ok";$("loadStatus").textContent=f.name+" loaded • MASTER_DATA • "+state.rows.length.toLocaleString()+" records";$("results").classList.add("hidden");state.result=null;
+   const ds=state.rows.map(x=>x.date).filter(Boolean).sort((a,b)=>a-b);if(ds.length){$("startDate").value=iso(ds[0]);$("endDate").value=iso(ds[ds.length-1])}App.verify();
+  }catch(err){state.rows=[];state.verified=false;$("loadStatus").className="status bad";$("loadStatus").textContent="Import failed: "+err.message;$("verification").innerHTML='<div class="status bad">'+err.message+"</div>"}
+ };
+ rd.readAsArrayBuffer(f);
+});
+</script>
+</body></html>

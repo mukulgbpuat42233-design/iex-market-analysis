@@ -86,6 +86,25 @@ button,input,select{font:inherit}
   .matrix-report-table .metric-cell{font-size:8.2pt!important;width:43mm!important;padding-left:6px!important}
 }
 
+
+/* Full-color market segment cards */
+.segment-screen .seg{
+  border:2px solid transparent;
+  color:#fff;
+  min-height:112px;
+  transition:transform .18s ease, box-shadow .18s ease, filter .18s ease;
+}
+.segment-screen .seg strong{color:#fff!important}
+.segment-screen .seg span{color:rgba(255,255,255,.96)!important}
+.segment-screen .seg::before{display:none}
+.segment-screen .seg-DAM{background:linear-gradient(135deg,#4aa8df,#1f79b5)!important;border-color:#1f79b5!important}
+.segment-screen .seg-GDAM{background:linear-gradient(135deg,#39a96b,#16834d)!important;border-color:#16834d!important}
+.segment-screen .seg-RTM{background:linear-gradient(135deg,#f39a45,#d96b12)!important;border-color:#d96b12!important}
+.segment-screen .seg-TAM{background:linear-gradient(135deg,#e05252,#b71c1c)!important;border-color:#b71c1c!important}
+.segment-screen .seg-SOLAR{background:linear-gradient(135deg,#e7bd32,#b98a00)!important;border-color:#b98a00!important}
+.segment-screen .seg:hover{transform:translateY(-3px);filter:brightness(1.06);box-shadow:0 10px 22px rgba(20,54,84,.18)}
+.segment-screen .seg.active{transform:translateY(-4px) scale(1.025);filter:brightness(1.08) saturate(1.08);box-shadow:0 0 0 4px #fff,0 0 0 7px var(--segment-accent),0 12px 24px rgba(0,0,0,.22)}
+.segment-screen .seg.active::after{background:#fff;color:var(--seg-color);border:1px solid rgba(0,0,0,.08);box-shadow:0 2px 5px rgba(0,0,0,.15)}
 /* Colorful action bar */
 :root{--segment-accent:#0b3b6e}
 .topbar .badge.segment-badge{background:linear-gradient(135deg,var(--segment-accent),#ffffff22);border:2px solid var(--segment-accent);box-shadow:0 3px 10px rgba(0,0,0,.14);font-weight:800;letter-spacing:.2px;padding:8px 14px}

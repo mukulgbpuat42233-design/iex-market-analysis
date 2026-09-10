@@ -1153,10 +1153,14 @@ function renderSolarStyleReport(){
   function chartSvg(yr,key){
     const vals=yr.months.map(m=>{const st=m.st||{}; return key==='selectedBlocks'?Number(st.count||0):Number(st[key]||0)});
     const labels=yr.months.map(m=>m.name); const finite=vals.filter(Number.isFinite); if(!finite.length||finite.every(v=>v===0)) return '<div class="chart-note">No numeric data available for this metric.</div>';
-    const W=720,H=270,L=62,R=18,T=22,B=48, pw=W-L-R, ph=H-T-B; const maxV=Math.max(...finite), minV=Math.min(...finite); const span=maxV-minV||1;
-    const points=vals.map((v,i)=>{const x=L+(i*(pw/Math.max(1,vals.length-1))); const y=T+ph-((v-minV)/span)*ph; return [x,y,v]});
-    const yTicks=[0,1,2,3,4].map(i=>minV+span*(i/4));
-    let g=''; yTicks.forEach(v=>{const y=T+ph-((v-minV)/span)*ph; g+=`<line x1="${L}" y1="${y}" x2="${W-R}" y2="${y}" stroke="#d7deea"/><text x="${L-7}" y="${y+4}" text-anchor="end" font-size="12" fill="#53657c">${fmt(v)}</text>`});
+    const W=720,H=270,L=78,R=18,T=22,B=48, pw=W-L-R, ph=H-T-B;
+    const isMcpMetric = ['avg','max','min'].includes(key);
+    const axisMin = isMcpMetric ? 0 : 0;
+    const axisMax = isMcpMetric ? 10000 : Math.max(1, Math.ceil(Math.max(...finite)/100)*100);
+    const span=axisMax-axisMin||1;
+    const points=vals.map((v,i)=>{const x=L+(i*(pw/Math.max(1,vals.length-1))); const y=T+ph-((Math.max(axisMin,Math.min(axisMax,v))-axisMin)/span)*ph; return [x,y,v]});
+    const yTicks=isMcpMetric ? [0,2000,4000,6000,8000,10000] : [0,1,2,3,4].map(i=>axisMin+span*(i/4));
+    let g=''; yTicks.forEach(v=>{const y=T+ph-((v-axisMin)/span)*ph; const label=isMcpMetric ? `₹${Number(v).toLocaleString('en-IN')}` : fmt(v); g+=`<line x1="${L}" y1="${y}" x2="${W-R}" y2="${y}" stroke="#d7deea"/><text x="${L-9}" y="${y+4}" text-anchor="end" font-size="12" fill="#53657c">${label}</text>`});
     labels.forEach((lab,i)=>{const x=points[i][0]; g+=`<text x="${x}" y="${H-18}" text-anchor="middle" font-size="12" fill="#243b5a">${lab}</text>`});
     for(let i=0;i<points.length-1;i++) g+=`<line x1="${points[i][0]}" y1="${points[i][1]}" x2="${points[i+1][0]}" y2="${points[i+1][1]}" stroke="#C8102E" stroke-width="3"/>`;
     points.forEach(p=>g+=`<circle cx="${p[0]}" cy="${p[1]}" r="4.5" fill="#012169"/><title>${labels[points.indexOf(p)]}: ${fmt(p[2])}</title>`);

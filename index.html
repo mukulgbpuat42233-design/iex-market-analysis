@@ -1201,6 +1201,10 @@ function initMetricSelectionOrder(){
   metricSelectionOrder=[...document.querySelectorAll('.metric-check:checked')].map(c=>c.value);
   updateMetricSummary(true);
 }
+function getSelectedMetricOrder(){
+  const checked=new Set([...document.querySelectorAll('.metric-check:checked')].map(c=>c.value));
+  return metricSelectionOrder.filter(k=>checked.has(k));
+}
 function getSelectedMetrics(){
   const checked=new Set([...document.querySelectorAll('.metric-check:checked')].map(c=>c.value));
   metricSelectionOrder=metricSelectionOrder.filter(k=>checked.has(k));
@@ -1241,7 +1245,8 @@ function serializableRows(){
 function saveBackup(){
   if(!S.rows.length){alert('No uploaded data is available to back up.');return;}
   const backup={version:1,createdAt:new Date().toISOString(),segment:S.segment,sourceWorkbook:S.sourceWorkbook||'',sourceSheet:S.sourceSheet||'',rows:serializableRows(),verified:!!S.verified,quality:S.quality||null,settings:{studyName:$('studyName')?.value||'',startDate:$('d1')?.value||'',endDate:$('d2')?.value||'',startBlock:$('b1')?.value||1,endBlock:$('b2')?.value||96,blockMode:$('blockMode')?.value||'range',customBlocks:$('customBlocks')?.value||'',metricOrder:getSelectedMetricOrder()}};
-  const blob=new Blob([JSON.stringify(backup)],{type:'application/json'});
+  const json=JSON.stringify(backup);
+  const blob=new Blob([json],{type:'application/json'});
   const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
   const stamp=new Date().toISOString().slice(0,19).replace(/[:T]/g,'-');
   a.download=(S.segment||'MARKET')+'_Power_Market_Backup_'+stamp+'.thdcbackup.json';

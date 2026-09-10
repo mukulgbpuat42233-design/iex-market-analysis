@@ -151,6 +151,24 @@ canvas{width:100%;height:300px;border:1px solid var(--line);border-radius:8px;ba
 .tab{padding:8px 12px;border:1px solid var(--line);background:#fff;border-radius:7px;cursor:pointer;font-weight:700;color:var(--navy)}
 .tab.active{background:#0b3b6e;color:#fff}
 .note{font-size:12px;color:var(--muted);line-height:1.45}.formula-card{background:#fbfdff;border:1px solid #c9dbea;border-radius:10px;padding:14px;margin-top:14px}.formula-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.formula-grid textarea{width:100%;min-height:42px;resize:vertical;padding:9px 10px;border:1px solid #c8d7e5;border-radius:7px;background:#fff;color:var(--ink);font-family:Consolas,monospace;font-size:12px}.formula-help{background:#eef6ff;border:1px solid #c8ddf3;border-radius:8px;padding:10px;font-size:12px;line-height:1.5}.formula-status{font-size:12px;margin-top:8px;font-weight:700}@media(max-width:1000px){.formula-grid{grid-template-columns:1fr}}
+
+/* Compact, equal-size block controls */
+.block-input-field,.block-mode-field{min-width:0}
+.block-input-field input{box-sizing:border-box;width:100%;height:40px;padding:7px 10px;font-size:14px;font-weight:700}
+.block-mode-select{box-sizing:border-box;width:100%;height:40px;padding:7px 28px 7px 9px;font-size:11px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.block-time{font-size:11px;font-weight:800;text-align:center;color:#174f84;margin-top:4px;white-space:nowrap}
+.block-input-field.is-active input{border-color:#2f80ed;background:#eef6ff;box-shadow:0 0 0 2px rgba(47,128,237,.10)}
+.block-input-field.is-active.end input{border-color:#e63946;background:#fff1f3;box-shadow:0 0 0 2px rgba(230,57,70,.10)}
+.block-mode-field select.mode-range{border-color:#2f80ed;background:#eef6ff;color:#164f8a}
+.block-mode-field select.mode-all{border-color:#2e9b5f;background:#effaf3;color:#176b42}
+.block-mode-field select.mode-list{border-color:#8b5cf6;background:#f5f0ff;color:#6337b7}
+.block-selection-badge.mode-range{background:#eef6ff;border-color:#2f80ed;color:#164f8a}
+.block-selection-badge.mode-all{background:#effaf3;border-color:#2e9b5f;color:#176b42}
+.block-selection-badge.mode-list{background:#f5f0ff;border-color:#8b5cf6;color:#6337b7}
+@media(max-width:1000px){.controls{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){.controls{grid-template-columns:1fr}.block-mode-select{font-size:12px}}
+@media print{.block-time{font-size:10px}}
+
 .footer{text-align:center;color:#71869a;font-size:12px;padding:20px}
 @media(max-width:1000px){.segment-screen{grid-template-columns:repeat(2,1fr)}.grid,.kpis,.controls{grid-template-columns:1fr 1fr}}
 @media(max-width:650px){.segment-screen{grid-template-columns:1fr}.grid,.kpis,.controls{grid-template-columns:1fr}}
@@ -453,6 +471,74 @@ canvas{width:100%;height:300px;border:1px solid var(--line);border-radius:8px;ba
  .metric-chart-card{margin-bottom:4mm;padding:2.5mm}
  .metric-chart-card h3{font-size:10.5pt}
 }
+
+/* Equal-size block controls + live time mapping */
+.controls{grid-template-columns:repeat(7,minmax(0,1fr)) !important;align-items:start}
+.block-input-field{min-width:0}
+.block-input-field input{width:100%;box-sizing:border-box}
+.block-time{margin-top:6px;text-align:center;font-size:12px;font-weight:800;color:#173f63;line-height:1.2;min-height:15px;white-space:nowrap}
+@media(max-width:1100px){.controls{grid-template-columns:repeat(4,minmax(0,1fr)) !important}}
+@media(max-width:700px){.controls{grid-template-columns:repeat(2,minmax(0,1fr)) !important}.block-time{font-size:11px}}
+@media print{.block-time{font-size:10pt;color:#111}}
+
+.block-selection-badge{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:7px 14px;border:2px solid #1d4f7a;border-radius:10px;background:linear-gradient(135deg,#f4f8fc,#e4edf6);color:#123e63;font-size:16px;font-weight:900;letter-spacing:.2px;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;box-shadow:0 2px 5px rgba(0,0,0,.08)}
+@media print{.block-selection-badge{border:1px solid #777;background:#fff;color:#000;box-shadow:none}}
+
+/* Backup / data management controls */
+.topbar .data-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap;width:100%;margin-top:2px}
+.topbar .data-tool{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:38px;border:0;border-radius:9px;padding:8px 13px;color:#fff;font-weight:800;cursor:pointer;box-shadow:0 3px 8px rgba(0,0,0,.16);transition:transform .15s,filter .15s,box-shadow .15s}
+.topbar .data-tool:hover{transform:translateY(-2px);filter:brightness(1.06);box-shadow:0 5px 12px rgba(0,0,0,.2)}
+.topbar .backup-save{background:linear-gradient(135deg,#6f42c1,#8b5cf6)}
+.topbar .backup-restore{background:linear-gradient(135deg,#00897b,#00a896)}
+.topbar .clear-data{background:linear-gradient(135deg,#c62828,#ef5350)}
+.topbar .reset-default{background:linear-gradient(135deg,#f57c00,#ff9800)}
+.topbar .data-tool:disabled{opacity:.55;filter:grayscale(.4);cursor:not-allowed;transform:none;box-shadow:none}
+.data-tool-icon{font-size:17px;line-height:1}
+@media(max-width:1050px){.topbar .data-tools{margin-top:4px}}
+@media print{.data-tools{display:none!important}}
+
+</style>
+
+<style>
+/* Compact block selection UI */
+.controls{grid-template-columns:1fr 1fr .82fr .82fr .82fr .82fr 1.15fr 1.25fr;gap:8px}
+.block-input-field input{height:38px;font-size:14px}
+.block-mode-field{min-width:0}
+.block-mode-select{height:38px;font-size:12px;padding:6px 24px 6px 8px;letter-spacing:-.1px;text-overflow:clip}
+.block-time{font-size:10px;margin-top:3px}
+.block-selection-badge{display:inline-flex;align-items:center;justify-content:center;min-height:30px;padding:4px 9px;border:1px solid #c8d7e5;border-radius:7px;font-size:12px;font-weight:800;white-space:nowrap}
+@media(max-width:1200px){.controls{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:800px){.controls{grid-template-columns:repeat(2,1fr)}}
+</style>
+
+<style id="large-block-time-font">
+.block-time{font-size:16px !important;font-weight:800 !important;line-height:1.25 !important;letter-spacing:.1px !important;margin-top:7px !important;min-height:20px !important;}
+@media(max-width:700px){.block-time{font-size:14px !important;}}
+@media print{.block-time{font-size:14pt !important;font-weight:800 !important;}}
+
+/* Centered and aligned block selection controls */
+.block-input-field, .block-mode-field {
+  display:flex !important; flex-direction:column; justify-content:flex-start; align-items:stretch;
+  text-align:center;
+}
+.block-input-field label, .block-mode-field label {
+  text-align:center !important; width:100% !important; padding:0 !important;
+}
+.block-input-field input {
+  width:100% !important; text-align:center !important;
+  font-size:15px !important; font-weight:800 !important;
+}
+.block-time {
+  width:100%; text-align:center !important; font-size:14px !important;
+  line-height:20px; font-weight:800; margin-top:5px;
+}
+.block-mode-select {
+  width:100% !important; text-align:center; text-align-last:center;
+}
+.block-mode-field { min-width:0 !important; }
+@media (min-width:900px){
+  .block-input-field, .block-mode-field { max-width:190px; }
+}
 </style>
 </head>
 <body>
@@ -483,7 +569,13 @@ canvas{width:100%;height:300px;border:1px solid var(--line);border-radius:8px;ba
   <button id="runBtn" class="btn run-btn" onclick="runAnalysis()" disabled>▶&nbsp; Run Analysis</button>
   <button id="excelBtn" class="btn export-excel" onclick="exportExcel()" disabled><span class="file-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="3" fill="#21A366"/><path d="M7 7h5.5c2.7 0 4.5 1.5 4.5 4s-1.8 4-4.5 4H7V7zm3 2.1v3.8h2.1c1.3 0 2.1-.7 2.1-1.9s-.8-1.9-2.1-1.9H10z" fill="#fff"/><path d="M3 5h6v14H3z" fill="#107C41"/><path d="M5 8.2l1.5 2.3L8 8.2h1.4l-2.2 3.4 2.3 3.5H8l-1.5-2.4L5 15.1H3.6l2.2-3.5H5z" fill="#fff"/></svg></span>Export Excel</button>
   <button id="pdfBtn" class="btn export-pdf" onclick="window.print()" disabled><span class="pdf-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="3" fill="#fff"/><path d="M7 18V6h4.7c2.8 0 4.3 1.4 4.3 3.8s-1.5 3.8-4.3 3.8H9.7V18H7zm2.7-6.8h1.8c1.2 0 1.8-.5 1.8-1.4s-.6-1.4-1.8-1.4H9.7v2.8z" fill="#D32F2F"/><path d="M17.2 6.2h1.4v11.6h-1.4z" fill="#D32F2F"/></svg></span>Export PDF</button>
-</div>
+  <div class="data-tools">
+    <button id="saveBackupBtn" class="data-tool backup-save" onclick="saveBackup()"><span class="data-tool-icon">💾</span> Save Backup</button>
+    <button id="restoreBackupBtn" class="data-tool backup-restore" onclick="$('backupInput').click()"><span class="data-tool-icon">↥</span> Restore Backup</button>
+    <input id="backupInput" type="file" accept=".json,.thdcbackup" hidden onchange="restoreBackup(event)">
+    <button id="clearDataBtn" class="data-tool clear-data" onclick="clearData()"><span class="data-tool-icon">🗑</span> Clear Data</button>
+    <button id="resetDefaultBtn" class="data-tool reset-default" onclick="resetDefaults()"><span class="data-tool-icon">↺</span> Reset Defaults</button>
+  </div></div>
 
 <div class="wrap">
   <section id="segmentScreen" class="hero">
@@ -525,19 +617,19 @@ canvas{width:100%;height:300px;border:1px solid var(--line);border-radius:8px;ba
         <div class="field"><label>Study Name</label><input id="studyName" value="DAM Market Study"></div>
         <div class="field"><label>Start Date</label><input id="d1" type="date"></div>
         <div class="field"><label>End Date</label><input id="d2" type="date"></div>
-        <div class="field"><label>Start Block</label><input id="b1" type="number" min="1" max="96" value="1" oninput="updateBlockCount()"></div>
-        <div class="field"><label>End Block</label><input id="b2" type="number" min="1" max="96" value="96" oninput="updateBlockCount()"></div>
-        <div class="field"><label>Block Selection Mode</label>
-          <select id="blockMode" onchange="changeBlockMode()">
+        <div class="field block-input-field is-active"><label>Start Block</label><input id="b1" type="number" min="1" max="96" value="1" oninput="updateBlockCount()"><div id="b1Time" class="block-time">00:00 - 00:15</div></div>
+        <div class="field block-input-field is-active end"><label>End Block</label><input id="b2" type="number" min="1" max="96" value="96" oninput="updateBlockCount()"><div id="b2Time" class="block-time">23:45 - 24:00</div></div>
+        <div class="field block-mode-field"><label>Block Selection Mode</label>
+          <select id="blockMode" class="block-mode-select mode-range" onchange="changeBlockMode()">
             <option value="range">Custom Start / End Block</option>
             <option value="all">96 / 96 (All Blocks)</option>
             <option value="list">Specific / Random Blocks</option>
           </select>
         </div>
-        <div class="field"><label>Quick Selection</label><div style="display:flex;gap:7px;align-items:center;flex-wrap:wrap">
-          <button type="button" class="btn small" onclick="setBlockPreset(25,72)">48 / 96</button>
+        <div class="field"><label>Selected Blocks</label><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span id="selectedBlockDisplay" class="block-selection-badge">1–96</span>
           <button type="button" class="btn small" onclick="setBlockPreset(1,96)">96 / 96</button>
-          <span id="blockCount" class="note" style="margin:0;font-weight:800">96 / 96 blocks</span>
+          <span id="blockCount" class="note" style="margin:0;font-weight:800">96 blocks selected</span>
         </div></div>
       </div>
       <div class="field" id="customBlockListWrap" style="margin-top:12px;display:none">
@@ -851,16 +943,50 @@ function verifyData(){
   else msg='<div class="status bad"><b>Verification needs attention.</b> '+q.invalid.length+' non-numeric MCP, '+q.dup.length+' duplicate Date+Block, '+q.blockBad.length+' invalid block, '+q.hourBad.length+' Hour/Block mismatch, '+q.incomplete.length+' incomplete date(s). Analysis can still run on valid numeric MCP records.</div>';
   $('verification').innerHTML=msg;
 }
+function blockTimeLabel(block){
+  const b=Math.max(1,Math.min(96,Number(block)||1));
+  const startMin=(b-1)*15;
+  const endMin=startMin+15;
+  const hhmm=m=>m===1440?'24:00':String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0');
+  return hhmm(startMin)+' - '+hhmm(endMin);
+}
+function updateBlockTimes(){
+  const b1=Math.max(1,Math.min(96,Number($('b1')?.value)||1));
+  const b2=Math.max(1,Math.min(96,Number($('b2')?.value)||96));
+  if($('b1Time')) $('b1Time').textContent=blockTimeLabel(b1);
+  if($('b2Time')) $('b2Time').textContent=blockTimeLabel(b2);
+}
 function updateBlockCount(){
   try{
-    const n=selectedBlocks().length;
+    updateBlockTimes();
+    const blocks=selectedBlocks();
+    const n=blocks.length;
     const el=$('blockCount');
-    if(el) el.textContent=`${n} / 96 blocks`;
+    const badge=$('selectedBlockDisplay');
+    const mode=$('blockMode')?.value||'range';
+    const modeSelect=$('blockMode');
+    const modeClass=mode==='all'?'mode-all':mode==='list'?'mode-list':'mode-range';
+    if(modeSelect){ modeSelect.classList.remove('mode-range','mode-all','mode-list'); modeSelect.classList.add(modeClass); }
+    if(badge){ badge.classList.remove('mode-range','mode-all','mode-list'); badge.classList.add(modeClass); }
+    let label='';
+    if(mode==='all'){
+      label='1–96';
+    }else if(mode==='list'){
+      label=blocks.join(', ');
+    }else{
+      label=blocks.length===1 ? String(blocks[0]) : `${blocks[0]}–${blocks[blocks.length-1]}`;
+    }
+    if(badge) badge.textContent=label;
+    if(el) el.textContent=`${n} block${n===1?'':'s'} selected`;
   }catch(e){
+    updateBlockTimes();
     const el=$('blockCount');
+    const badge=$('selectedBlockDisplay');
+    if(badge) badge.textContent='Invalid selection';
     if(el) el.textContent='Invalid block selection';
   }
 }
+
 function changeBlockMode(){
   const mode=$('blockMode')?.value||'range';
   const listWrap=$('customBlockListWrap');
@@ -893,6 +1019,8 @@ function selectedBlocks(){
   if(a>b) throw new Error('Start Block cannot be greater than End Block.');
   return Array.from({length:b-a+1},(_,i)=>a+i);
 }
+
+updateBlockCount();
 
 function getSolarBlocks(){
   const a=Math.max(1,Math.min(96,Number($('solarB1')?.value)||25));
@@ -1101,7 +1229,7 @@ document.addEventListener('click',function(e){
   const dd=$('metricDropdown');
   if(dd && !dd.contains(e.target)) $('metricMenu').classList.remove('open');
 });
-
+\nfunction serializableRows(){\n  return S.rows.map(r=>({...r,date:r.date instanceof Date?iso(r.date):r.date}));\n}\nfunction saveBackup(){\n  if(!S.rows.length){alert('No uploaded data is available to back up.');return;}\n  const backup={version:1,createdAt:new Date().toISOString(),segment:S.segment,sourceWorkbook:S.sourceWorkbook||'',sourceSheet:S.sourceSheet||'',rows:serializableRows(),verified:!!S.verified,quality:S.quality||null,settings:{studyName:$('studyName')?.value||'',startDate:$('d1')?.value||'',endDate:$('d2')?.value||'',startBlock:$('b1')?.value||1,endBlock:$('b2')?.value||96,blockMode:$('blockMode')?.value||'range',customBlocks:$('customBlocks')?.value||'',metricOrder:getSelectedMetricOrder()}};\n  const blob=new Blob([JSON.stringify(backup)],{type:'application/json'});\n  const a=document.createElement('a'); a.href=URL.createObjectURL(blob);\n  const stamp=new Date().toISOString().slice(0,19).replace(/[:T]/g,'-');\n  a.download=(S.segment||'MARKET')+'_Power_Market_Backup_'+stamp+'.thdcbackup.json';\n  document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000);\n  $('loadStatus').className='status ok'; $('loadStatus').textContent='Backup saved successfully • '+S.rows.length.toLocaleString()+' records';\n}\nfunction restoreBackup(e){\n  const f=e.target.files?.[0]; if(!f)return;\n  const reader=new FileReader();\n  reader.onload=()=>{\n    try{\n      const b=JSON.parse(reader.result);\n      if(!b||!Array.isArray(b.rows)||!b.rows.length)throw new Error('Invalid or empty backup file.');\n      const seg=String(b.segment||'').toUpperCase();\n      if(seg && ['DAM','GDAM','RTM','TAM','SOLAR'].includes(seg)){S.segment=seg;applySegmentTheme(seg);$('segBadge').innerHTML='<span class="seg-dot"></span>Segment: '+seg;$('title').textContent=seg+' Market Study';$('studyName').value=seg+' Market Study';$('segmentScreen').classList.add('hidden');$('workspace').classList.remove('hidden');}\n      S.rows=b.rows.map(r=>({...r,date:parseDate(r.date)}));\n      S.sourceWorkbook=b.sourceWorkbook||'Restored Backup'; S.sourceSheet=b.sourceSheet||''; S.quality=b.quality||buildQuality(S.rows.filter(r=>r.invalidMcp)); S.verified=!!b.verified; S.results=null;\n      const st=b.settings||{};\n      if(st.studyName)$('studyName').value=st.studyName;\n      if(st.startDate)$('d1').value=st.startDate; else setDateDefaults();\n      if(st.endDate)$('d2').value=st.endDate;\n      $('b1').value=Number(st.startBlock)||1; $('b2').value=Number(st.endBlock)||96;\n      $('blockMode').value=st.blockMode||'range'; $('customBlocks').value=st.customBlocks||'';\n      changeBlockMode();\n      if(Array.isArray(st.metricOrder)&&st.metricOrder.length){metricSelectionOrder=st.metricOrder.slice();document.querySelectorAll('.metric-check').forEach(c=>c.checked=metricSelectionOrder.includes(c.value));updateMetricSummary(true);}\n      $('loadStatus').className='status ok'; $('loadStatus').textContent='Backup restored • '+S.rows.length.toLocaleString()+' records • '+(S.segment||'MARKET');\n      $('verifyBtn').disabled=false;$('runBtn').disabled=false;$('excelBtn').disabled=true;$('pdfBtn').disabled=true; $('results').classList.add('hidden'); updateBlockCount(); verifyData();\n    }catch(err){alert('Backup restore failed: '+err.message)} finally{e.target.value='';}\n  };\n  reader.readAsText(f);\n}\nfunction clearData(){\n  if(!S.rows.length){alert('No data is currently loaded.');return;}\n  if(!confirm('Clear all uploaded data and analysis results? This cannot be undone unless you have saved a backup.'))return;\n  S.rows=[];S.verified=false;S.results=null;S.quality=null;S.sourceWorkbook='';S.sourceSheet='';\n  $('fileInput').value='';$('verification').innerHTML='';$('results').classList.add('hidden');\n  $('verifyBtn').disabled=true;$('runBtn').disabled=true;$('excelBtn').disabled=true;$('pdfBtn').disabled=true;\n  $('loadStatus').className='status info';$('loadStatus').textContent='DATA CLEARED • Upload an Excel workbook or restore a backup.';\n}\nfunction resetDefaults(){\n  $('studyName').value=(S.segment||'DAM')+' Market Study';\n  if(S.rows.length)setDateDefaults(); else {$('d1').value='';$('d2').value='';}\n  $('b1').value=1;$('b2').value=96;$('blockMode').value='range';$('customBlocks').value='';\n  document.querySelectorAll('.metric-check').forEach(c=>c.checked=true);\n  metricSelectionOrder=[...document.querySelectorAll('.metric-check')].map(c=>c.value);\n  updateMetricSummary(true);changeBlockMode();updateBlockCount();\n  if(S.results){S.results=null;$('results').classList.add('hidden');$('excelBtn').disabled=true;$('pdfBtn').disabled=true;}\n  $('loadStatus').className='status info';$('loadStatus').textContent=S.rows.length?'Defaults restored • Data retained':'Defaults restored • Ready for data upload';\n}\n
 function runAnalysis(){
   if(!S.rows.length){alert('Upload Excel first.');return}
   showLoader('Running analysis…');
@@ -1204,7 +1332,7 @@ function table(headers,rows){
     rows.map(row=>'<tr>'+row.map((v,i)=>'<td class="'+(i>=headers.length-1?'num':'')+'">'+(v==null?'—':v)+'</td>').join('')+'</tr>').join('')+'</tbody></table></div>';
 }
 function mName(m){return ['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][m]}
-function timeForBlock(b){const mins=(b-1)*15;const a=String(Math.floor(mins/60)).padStart(2,'0')+':'+String(mins%60).padStart(2,'0');const e=(mins+15)%1440;const z=String(Math.floor(e/60)).padStart(2,'0')+':'+String(e%60).padStart(2,'0');return a+' - '+z}
+function timeForBlock(b){const mins=(b-1)*15;const a=String(Math.floor(mins/60)).padStart(2,'0')+':'+String(mins%60).padStart(2,'0');const endMins=mins+15;const z=endMins===1440?'24:00':String(Math.floor(endMins/60)).padStart(2,'0')+':'+String(endMins%60).padStart(2,'0');return a+' - '+z}
 function clearSelection(){ $('customBlocks').value='';$('b1').value=1;$('b2').value=96; if(S.rows.length)setDateDefaults() }
 
 function drawBlockChart(){

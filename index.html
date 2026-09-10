@@ -98,6 +98,12 @@ button,input,select{font:inherit}
 .topbar .btn.export-excel{background:linear-gradient(135deg,#107c41,#18884b)}
 .topbar .btn.export-pdf{background:linear-gradient(135deg,#b71c1c,#e53935)}
 .topbar .btn:disabled{filter:grayscale(.55);opacity:.55;box-shadow:none}
+/* Active market-segment selection */
+.segment-screen .seg{position:relative;transition:transform .15s,box-shadow .15s,filter .15s;}
+.segment-screen .seg.active{transform:translateY(-3px) scale(1.02);box-shadow:0 0 0 4px var(--segment-accent),0 8px 20px rgba(0,0,0,.18);filter:saturate(1.18);}
+.segment-screen .seg.active::after{content:'✓ SELECTED';position:absolute;right:10px;top:8px;font-size:10px;font-weight:900;padding:3px 7px;border-radius:999px;background:var(--segment-accent);color:#fff;letter-spacing:.4px;}
+.topbar .badge.segment-badge.filled{color:#fff;}
+
 .file-icon,.pdf-icon{width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 24px}
 .file-icon svg,.pdf-icon svg{width:24px;height:24px;display:block}
 .segment-badge .seg-dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:currentColor;margin-right:6px;box-shadow:0 0 0 3px rgba(255,255,255,.22)}
@@ -551,7 +557,6 @@ canvas{width:100%;height:300px;border:1px solid var(--line);border-radius:8px;ba
     <clipPath id="clipBottom"><path d="M48,64 L52,64 L78,110 L22,110 Z"/></clipPath>
     <rect class="sandTop" clip-path="url(#clipTop)" x="22" y="14" width="56" height="46" fill="#0d6efd"/>
     <rect class="sandBottom" clip-path="url(#clipBottom)" x="22" y="64" width="56" height="46" fill="#0d6efd"/>
-    <rect class="stream" x="49" y="60" width="2" height="6" fill="#0d6efd"/>
   </svg>
   <div class="loading-text" id="loadingText">Loading data…</div>
   <div class="loading-sub">Please wait — THDC Unified Power Market Study Portal</div>
@@ -728,9 +733,15 @@ function applySegmentTheme(seg){
   const badge=$('segBadge'); if(badge) badge.style.borderColor=c;
 }
 function selectSegment(seg){
+  seg=String(seg||'').toUpperCase();
+  if(!['DAM','GDAM','RTM','TAM','SOLAR'].includes(seg)) return;
   S.segment=seg;
+  document.querySelectorAll('.segment-screen .seg').forEach(btn=>btn.classList.toggle('active', btn.dataset.seg===seg));
   applySegmentTheme(seg);
-  $('segBadge').innerHTML='<span class="seg-dot"></span>Segment: '+seg;
+  const badge=$('segBadge');
+  badge.innerHTML='<span class="seg-dot"></span>Segment: '+seg;
+  badge.classList.add('filled');
+  badge.style.background='linear-gradient(135deg,var(--segment-accent),#ffffff22)';
   $('segmentScreen').classList.add('hidden');
   $('workspace').classList.remove('hidden');
   $('title').textContent=seg+' Market Study';
@@ -738,8 +749,11 @@ function selectSegment(seg){
 }
 function changeSegment(){
   S.segment=null; S.rows=[]; S.verified=false; S.results=null;
+  document.querySelectorAll('.segment-screen .seg').forEach(btn=>btn.classList.remove('active'));
+  applySegmentTheme('');
   $('workspace').classList.add('hidden'); $('segmentScreen').classList.remove('hidden');
   $('segBadge').innerHTML='<span class="seg-dot"></span>Segment: Not Selected';
+  $('segBadge').classList.remove('filled');
   $('verifyBtn').disabled=true;$('runBtn').disabled=true;$('excelBtn').disabled=true;$('pdfBtn').disabled=true;
   $('fileInput').value='';
 }
@@ -827,19 +841,10 @@ async function importFile(e){
     const buf=await f.arrayBuffer();
     const wb=XLSX.read(buf,{type:'array',cellDates:true});
 
-    const detectedSegment=detectWorkbookSegment(wb);
-    if(detectedSegment && ['DAM','GDAM','RTM','TAM','SOLAR'].includes(detectedSegment) && S.segment!==detectedSegment){
-      S.segment=detectedSegment;
-      applySegmentTheme(detectedSegment);
-      $('segBadge').textContent='Segment: '+detectedSegment;
-      $('segBadge').classList.add('filled');
-      $('title').textContent=detectedSegment+' Market Study';
-      $('studyName').value=detectedSegment+' Market Study';
-      $('segmentScreen').classList.add('hidden');
-      $('workspace').classList.remove('hidden');
-    }
-
-    const sheetName=findDataSheet(wb,S.segment);
+    // Respect the segment explicitly selected by the user. Do not silently switch
+    // DAM/GDAM/RTM/TAM/SOLAR based on the first sheet found in the workbook.
+    const selectedSegment=S.segment;
+    const sheetName=findDataSheet(wb,selectedSegment);
     if(!sheetName){
       throw new Error(
         'No compatible data sheet found for '+S.segment+'. Expected one of: '+
@@ -1229,7 +1234,64 @@ document.addEventListener('click',function(e){
   const dd=$('metricDropdown');
   if(dd && !dd.contains(e.target)) $('metricMenu').classList.remove('open');
 });
-\nfunction serializableRows(){\n  return S.rows.map(r=>({...r,date:r.date instanceof Date?iso(r.date):r.date}));\n}\nfunction saveBackup(){\n  if(!S.rows.length){alert('No uploaded data is available to back up.');return;}\n  const backup={version:1,createdAt:new Date().toISOString(),segment:S.segment,sourceWorkbook:S.sourceWorkbook||'',sourceSheet:S.sourceSheet||'',rows:serializableRows(),verified:!!S.verified,quality:S.quality||null,settings:{studyName:$('studyName')?.value||'',startDate:$('d1')?.value||'',endDate:$('d2')?.value||'',startBlock:$('b1')?.value||1,endBlock:$('b2')?.value||96,blockMode:$('blockMode')?.value||'range',customBlocks:$('customBlocks')?.value||'',metricOrder:getSelectedMetricOrder()}};\n  const blob=new Blob([JSON.stringify(backup)],{type:'application/json'});\n  const a=document.createElement('a'); a.href=URL.createObjectURL(blob);\n  const stamp=new Date().toISOString().slice(0,19).replace(/[:T]/g,'-');\n  a.download=(S.segment||'MARKET')+'_Power_Market_Backup_'+stamp+'.thdcbackup.json';\n  document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000);\n  $('loadStatus').className='status ok'; $('loadStatus').textContent='Backup saved successfully • '+S.rows.length.toLocaleString()+' records';\n}\nfunction restoreBackup(e){\n  const f=e.target.files?.[0]; if(!f)return;\n  const reader=new FileReader();\n  reader.onload=()=>{\n    try{\n      const b=JSON.parse(reader.result);\n      if(!b||!Array.isArray(b.rows)||!b.rows.length)throw new Error('Invalid or empty backup file.');\n      const seg=String(b.segment||'').toUpperCase();\n      if(seg && ['DAM','GDAM','RTM','TAM','SOLAR'].includes(seg)){S.segment=seg;applySegmentTheme(seg);$('segBadge').innerHTML='<span class="seg-dot"></span>Segment: '+seg;$('title').textContent=seg+' Market Study';$('studyName').value=seg+' Market Study';$('segmentScreen').classList.add('hidden');$('workspace').classList.remove('hidden');}\n      S.rows=b.rows.map(r=>({...r,date:parseDate(r.date)}));\n      S.sourceWorkbook=b.sourceWorkbook||'Restored Backup'; S.sourceSheet=b.sourceSheet||''; S.quality=b.quality||buildQuality(S.rows.filter(r=>r.invalidMcp)); S.verified=!!b.verified; S.results=null;\n      const st=b.settings||{};\n      if(st.studyName)$('studyName').value=st.studyName;\n      if(st.startDate)$('d1').value=st.startDate; else setDateDefaults();\n      if(st.endDate)$('d2').value=st.endDate;\n      $('b1').value=Number(st.startBlock)||1; $('b2').value=Number(st.endBlock)||96;\n      $('blockMode').value=st.blockMode||'range'; $('customBlocks').value=st.customBlocks||'';\n      changeBlockMode();\n      if(Array.isArray(st.metricOrder)&&st.metricOrder.length){metricSelectionOrder=st.metricOrder.slice();document.querySelectorAll('.metric-check').forEach(c=>c.checked=metricSelectionOrder.includes(c.value));updateMetricSummary(true);}\n      $('loadStatus').className='status ok'; $('loadStatus').textContent='Backup restored • '+S.rows.length.toLocaleString()+' records • '+(S.segment||'MARKET');\n      $('verifyBtn').disabled=false;$('runBtn').disabled=false;$('excelBtn').disabled=true;$('pdfBtn').disabled=true; $('results').classList.add('hidden'); updateBlockCount(); verifyData();\n    }catch(err){alert('Backup restore failed: '+err.message)} finally{e.target.value='';}\n  };\n  reader.readAsText(f);\n}\nfunction clearData(){\n  if(!S.rows.length){alert('No data is currently loaded.');return;}\n  if(!confirm('Clear all uploaded data and analysis results? This cannot be undone unless you have saved a backup.'))return;\n  S.rows=[];S.verified=false;S.results=null;S.quality=null;S.sourceWorkbook='';S.sourceSheet='';\n  $('fileInput').value='';$('verification').innerHTML='';$('results').classList.add('hidden');\n  $('verifyBtn').disabled=true;$('runBtn').disabled=true;$('excelBtn').disabled=true;$('pdfBtn').disabled=true;\n  $('loadStatus').className='status info';$('loadStatus').textContent='DATA CLEARED • Upload an Excel workbook or restore a backup.';\n}\nfunction resetDefaults(){\n  $('studyName').value=(S.segment||'DAM')+' Market Study';\n  if(S.rows.length)setDateDefaults(); else {$('d1').value='';$('d2').value='';}\n  $('b1').value=1;$('b2').value=96;$('blockMode').value='range';$('customBlocks').value='';\n  document.querySelectorAll('.metric-check').forEach(c=>c.checked=true);\n  metricSelectionOrder=[...document.querySelectorAll('.metric-check')].map(c=>c.value);\n  updateMetricSummary(true);changeBlockMode();updateBlockCount();\n  if(S.results){S.results=null;$('results').classList.add('hidden');$('excelBtn').disabled=true;$('pdfBtn').disabled=true;}\n  $('loadStatus').className='status info';$('loadStatus').textContent=S.rows.length?'Defaults restored • Data retained':'Defaults restored • Ready for data upload';\n}\n
+
+function serializableRows(){
+  return S.rows.map(r=>({...r,date:r.date instanceof Date?iso(r.date):r.date}));
+}
+function saveBackup(){
+  if(!S.rows.length){alert('No uploaded data is available to back up.');return;}
+  const backup={version:1,createdAt:new Date().toISOString(),segment:S.segment,sourceWorkbook:S.sourceWorkbook||'',sourceSheet:S.sourceSheet||'',rows:serializableRows(),verified:!!S.verified,quality:S.quality||null,settings:{studyName:$('studyName')?.value||'',startDate:$('d1')?.value||'',endDate:$('d2')?.value||'',startBlock:$('b1')?.value||1,endBlock:$('b2')?.value||96,blockMode:$('blockMode')?.value||'range',customBlocks:$('customBlocks')?.value||'',metricOrder:getSelectedMetricOrder()}};
+  const blob=new Blob([JSON.stringify(backup)],{type:'application/json'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+  const stamp=new Date().toISOString().slice(0,19).replace(/[:T]/g,'-');
+  a.download=(S.segment||'MARKET')+'_Power_Market_Backup_'+stamp+'.thdcbackup.json';
+  document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+  $('loadStatus').className='status ok'; $('loadStatus').textContent='Backup saved successfully • '+S.rows.length.toLocaleString()+' records';
+}
+function restoreBackup(e){
+  const f=e.target.files?.[0]; if(!f)return;
+  const reader=new FileReader();
+  reader.onload=()=>{
+    try{
+      const b=JSON.parse(reader.result);
+      if(!b||!Array.isArray(b.rows)||!b.rows.length)throw new Error('Invalid or empty backup file.');
+      const seg=String(b.segment||'').toUpperCase();
+      if(seg && ['DAM','GDAM','RTM','TAM','SOLAR'].includes(seg)){S.segment=seg;applySegmentTheme(seg);$('segBadge').innerHTML='<span class="seg-dot"></span>Segment: '+seg;$('title').textContent=seg+' Market Study';$('studyName').value=seg+' Market Study';$('segmentScreen').classList.add('hidden');$('workspace').classList.remove('hidden');}
+      S.rows=b.rows.map(r=>({...r,date:parseDate(r.date)}));
+      S.sourceWorkbook=b.sourceWorkbook||'Restored Backup'; S.sourceSheet=b.sourceSheet||''; S.quality=b.quality||buildQuality(S.rows.filter(r=>r.invalidMcp)); S.verified=!!b.verified; S.results=null;
+      const st=b.settings||{};
+      if(st.studyName)$('studyName').value=st.studyName;
+      if(st.startDate)$('d1').value=st.startDate; else setDateDefaults();
+      if(st.endDate)$('d2').value=st.endDate;
+      $('b1').value=Number(st.startBlock)||1; $('b2').value=Number(st.endBlock)||96;
+      $('blockMode').value=st.blockMode||'range'; $('customBlocks').value=st.customBlocks||'';
+      changeBlockMode();
+      if(Array.isArray(st.metricOrder)&&st.metricOrder.length){metricSelectionOrder=st.metricOrder.slice();document.querySelectorAll('.metric-check').forEach(c=>c.checked=metricSelectionOrder.includes(c.value));updateMetricSummary(true);}
+      $('loadStatus').className='status ok'; $('loadStatus').textContent='Backup restored • '+S.rows.length.toLocaleString()+' records • '+(S.segment||'MARKET');
+      $('verifyBtn').disabled=false;$('runBtn').disabled=false;$('excelBtn').disabled=true;$('pdfBtn').disabled=true; $('results').classList.add('hidden'); updateBlockCount(); verifyData();
+    }catch(err){alert('Backup restore failed: '+err.message)} finally{e.target.value='';}
+  };
+  reader.readAsText(f);
+}
+function clearData(){
+  if(!S.rows.length){alert('No data is currently loaded.');return;}
+  if(!confirm('Clear all uploaded data and analysis results? This cannot be undone unless you have saved a backup.'))return;
+  S.rows=[];S.verified=false;S.results=null;S.quality=null;S.sourceWorkbook='';S.sourceSheet='';
+  $('fileInput').value='';$('verification').innerHTML='';$('results').classList.add('hidden');
+  $('verifyBtn').disabled=true;$('runBtn').disabled=true;$('excelBtn').disabled=true;$('pdfBtn').disabled=true;
+  $('loadStatus').className='status info';$('loadStatus').textContent='DATA CLEARED • Upload an Excel workbook or restore a backup.';
+}
+function resetDefaults(){
+  $('studyName').value=(S.segment||'DAM')+' Market Study';
+  if(S.rows.length)setDateDefaults(); else {$('d1').value='';$('d2').value='';}
+  $('b1').value=1;$('b2').value=96;$('blockMode').value='range';$('customBlocks').value='';
+  document.querySelectorAll('.metric-check').forEach(c=>c.checked=true);
+  metricSelectionOrder=[...document.querySelectorAll('.metric-check')].map(c=>c.value);
+  updateMetricSummary(true);changeBlockMode();updateBlockCount();
+  if(S.results){S.results=null;$('results').classList.add('hidden');$('excelBtn').disabled=true;$('pdfBtn').disabled=true;}
+  $('loadStatus').className='status info';$('loadStatus').textContent=S.rows.length?'Defaults restored • Data retained':'Defaults restored • Ready for data upload';
+}
+
 function runAnalysis(){
   if(!S.rows.length){alert('Upload Excel first.');return}
   showLoader('Running analysis…');
